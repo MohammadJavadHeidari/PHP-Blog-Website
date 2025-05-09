@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  # PHP Application
+  php-app:
+    image: php:8.1-apache
+    container_name: php-blog-app
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - PHP_MEMORY_LIMIT=256M
+    restart: always
+    # Install PDO MySQL extension and other dependencies
+    command: >
+      bash -c "docker-php-ext-install pdo pdo_mysql &&
+               a2enmod rewrite &&
+               apache2-foreground"
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: php-blog-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: blog_db
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: blog_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./_db:/docker-entrypoint-initdb.d
+
+  # phpMyAdmin for database management (optional)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: php-blog-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
+    driver: local
