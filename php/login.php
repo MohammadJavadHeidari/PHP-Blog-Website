@@ -42,17 +42,17 @@ if (
                header("Location: ../blog.php");
                exit;
             } else {
-               $em = "Incorect User name or password";
+               $em = "Incorrect User name or password";
                header("Location: ../login.php?error=$em&$data");
                exit;
             }
          } else {
-            $em = "Incorect User name or password";
+            $em = "Incorrect User name or password";
             header("Location: ../login.php?error=$em&$data");
             exit;
          }
       } else {
-         $em = "Incorect User name or password";
+         $em = "Incorrect User name or password";
          header("Location: ../login.php?error=$em&$data");
          exit;
       }

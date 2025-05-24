@@ -15,12 +15,11 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
 			header("Location: ../blog-view.php?error=$em&post_id=$post_id#comments");
 			exit;
 		} else {
-			$sql = "INSERT INTO comment(comment, user_id, post_id) 
-    	        VALUES(?,?,?)";
+			$sql = "INSERT INTO comment(comment, user_id, post_id) VALUES (?,?,?)";
 			$stmt = $conn->prepare($sql);
 			$stmt->execute([$comment, $user_id, $post_id]);
 
-			header("Location: ../blog-view.php?success=successfully commented ;) &post_id=$post_id#comments");
+			header("Location: ../blog-view.php?success=successfully commented;) &post_id=$post_id#comments");
 			exit;
 		}
 	} else {
